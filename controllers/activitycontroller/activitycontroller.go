@@ -1,10 +1,10 @@
-package productcontroller
+package activitiescontroller
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/tentangkode/go-restapi-gin/models"
+	"github.com/diasgsputra/go-restapi-gin/models"
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
@@ -12,18 +12,18 @@ import (
 
 func Index(c *gin.Context) {
 
-	var products []models.Product
+	var activities []models.Activities
 
-	models.DB.Find(&products)
-	c.JSON(http.StatusOK, gin.H{"products": products})
+	models.DB.Find(&activities)
+	c.JSON(http.StatusOK, gin.H{"activities": activities})
 
 }
 
 func Show(c *gin.Context) {
-	var product models.Product
+	var activities models.Activities
 	id := c.Param("id")
 
-	if err := models.DB.First(&product, id).Error; err != nil {
+	if err := models.DB.First(&activities, id).Error; err != nil {
 		switch err {
 		case gorm.ErrRecordNotFound:
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
@@ -34,33 +34,33 @@ func Show(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"product": product})
+	c.JSON(http.StatusOK, gin.H{"activities": activities})
 }
 
 func Create(c *gin.Context) {
 
-	var product models.Product
+	var activities models.Activities
 
-	if err := c.ShouldBindJSON(&product); err != nil {
+	if err := c.ShouldBindJSON(&activities); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	models.DB.Create(&product)
-	c.JSON(http.StatusOK, gin.H{"product": product})
+	models.DB.Create(&activities)
+	c.JSON(http.StatusOK, gin.H{"activities": activities})
 }
 
 func Update(c *gin.Context) {
-	var product models.Product
+	var activities models.Activities
 	id := c.Param("id")
 
-	if err := c.ShouldBindJSON(&product); err != nil {
+	if err := c.ShouldBindJSON(&activities); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	if models.DB.Model(&product).Where("id = ?", id).Updates(&product).RowsAffected == 0 {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "tidak dapat mengupdate product"})
+	if models.DB.Model(&activities).Where("id = ?", id).Updates(&activities).RowsAffected == 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "tidak dapat mengupdate activities"})
 		return
 	}
 
@@ -70,7 +70,7 @@ func Update(c *gin.Context) {
 
 func Delete(c *gin.Context) {
 
-	var product models.Product
+	var activities models.Activities
 
 	var input struct {
 		Id json.Number
@@ -82,8 +82,8 @@ func Delete(c *gin.Context) {
 	}
 
 	id, _ := input.Id.Int64()
-	if models.DB.Delete(&product, id).RowsAffected == 0 {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Tidak dapat menghapus product"})
+	if models.DB.Delete(&activities, id).RowsAffected == 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Tidak dapat menghapus activities"})
 		return
 	}
 

@@ -1,6 +1,6 @@
-module github.com/tentangkode/go-restapi-gin
+module github.com/diasgsputra/go-restapi-gin
 
-go 1.18
+go 1.20
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
