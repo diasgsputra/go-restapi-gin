@@ -1,4 +1,4 @@
-module github.com/diasgsputra/go-restapi-gin
+module go-restapi-gin
 
 go 1.20
 

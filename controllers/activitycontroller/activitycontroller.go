@@ -1,10 +1,10 @@
-package activitiescontroller
+package activitycontroller
 
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/diasgsputra/go-restapi-gin/models"
+	"time"
+	"go-restapi-gin/models"
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
@@ -46,8 +46,14 @@ func Create(c *gin.Context) {
 		return
 	}
 
+	if activities.Title == "" {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"status": "Bad Request"})
+		return
+	}
+
 	models.DB.Create(&activities)
-	c.JSON(http.StatusOK, gin.H{"activities": activities})
+	activities.CreatedAt = time.Now()
+	c.JSON(http.StatusCreated, gin.H{"status": "Success"})
 }
 
 func Update(c *gin.Context) {

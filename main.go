@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/diasgsputra/go-restapi-gin/controllers/activitycontroller"
-	"github.com/diasgsputra/go-restapi-gin/models"
+	"go-restapi-gin/controllers/activitycontroller"
+	"go-restapi-gin/controllers/todocontroller"
+	"go-restapi-gin/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,11 +12,17 @@ func main() {
 	r := gin.Default()
 	models.ConnectDatabase()
 
-	r.GET("/api/activities", activitycontroller.Index)
-	r.GET("/api/activity/:id", activitycontroller.Show)
-	r.POST("/api/activity", activitycontroller.Create)
-	r.PUT("/api/activity/:id", activitycontroller.Update)
-	r.DELETE("/api/activity", activitycontroller.Delete)
+	r.GET("/activity-groups", activitycontroller.Index)
+	r.GET("/activity-groups/:id", activitycontroller.Show)
+	r.POST("/activity-groups", activitycontroller.Create)
+	r.PATCH("/activity-groups/:id", activitycontroller.Update)
+	r.DELETE("/activity-groups/:id", activitycontroller.Delete)
 
-	r.Run()
+	r.GET("/todo-items", todocontroller.GetTodo)
+	r.GET("/todo-items/:id", todocontroller.GetTodoById)
+	r.POST("/todo-items", todocontroller.CreateTodo)
+	r.PATCH("/todo-items/:id", todocontroller.UpdateTodo)
+	r.DELETE("/todo-items/:id", todocontroller.DeleteTodo)
+
+	r.Run(":3030")
 }
